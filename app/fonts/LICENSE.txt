@@ -1,0 +1,2 @@
+TeX Gyre Pagella is distributed by GUST under the GUST Font License (a LaTeX Project Public License variant), which permits use, embedding and redistribution.
+See https://www.gust.org.pl/projects/e-foundry/tex-gyre for the original files and full licence.

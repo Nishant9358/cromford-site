@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+/*
+ * Cromford design tokens.
+ * Raw palette values live ONLY in this block. Everything else (components,
+ * Tailwind utilities) refers to the semantic tokens below.
+ */
+:root {
+  --mill-surface: #f4f1ea;
+  --mill-surface-raised: #fbf9f5;
+  --mill-surface-sunk: #e9e4d9;
+  --mill-ink: #16181a;
+  --mill-ink-muted: #5a564f;
+  --mill-line: #d6cebf;
+  --mill-derwent: #1d4b43;
+  --mill-derwent-soft: #dde7e2;
+  --mill-on-derwent: #f4f1ea;
+  --mill-copper: #9c4f25;
+  --mill-gritstone: #c9bda8;
+
+  --night-surface: #0f1112;
+  --night-surface-raised: #181b1d;
+  --night-surface-sunk: #0a0b0c;
+  --night-ink: #eeeae2;
+  --night-ink-muted: #a39e94;
+  --night-line: #2e3231;
+  --night-derwent: #7fbcab;
+  --night-derwent-soft: #18302b;
+  --night-on-derwent: #0f1112;
+  --night-copper: #e09264;
+  --night-gritstone: #7a705f;
+}
+
+/* Mill (light) — the default theme */
+:root,
+.theme-light {
+  --surface: var(--mill-surface);
+  --surface-raised: var(--mill-surface-raised);
+  --surface-sunk: var(--mill-surface-sunk);
+  --ink: var(--mill-ink);
+  --ink-muted: var(--mill-ink-muted);
+  --line: var(--mill-line);
+  --derwent: var(--mill-derwent);
+  --derwent-soft: var(--mill-derwent-soft);
+  --on-derwent: var(--mill-on-derwent);
+  --copper: var(--mill-copper);
+  --gritstone: var(--mill-gritstone);
+  color-scheme: light;
+}
+
+/* Night (dark) */
+.theme-dark {
+  --surface: var(--night-surface);
+  --surface-raised: var(--night-surface-raised);
+  --surface-sunk: var(--night-surface-sunk);
+  --ink: var(--night-ink);
+  --ink-muted: var(--night-ink-muted);
+  --line: var(--night-line);
+  --derwent: var(--night-derwent);
+  --derwent-soft: var(--night-derwent-soft);
+  --on-derwent: var(--night-on-derwent);
+  --copper: var(--night-copper);
+  --gritstone: var(--night-gritstone);
+  color-scheme: dark;
+}
+
+/*
+ * Derwent section: derwent ground, on-derwent text.
+ * Muted text and hairlines are mixed from the two brand values so they stay
+ * on-palette. on-derwent at 82% over derwent is ~7:1 (AA). The Night copper
+ * is used for focus rings here because it keeps 3:1 against derwent.
+ */
+.theme-derwent {
+  --surface: var(--mill-derwent);
+  --surface-raised: var(--mill-derwent);
+  --surface-sunk: var(--mill-derwent);
+  --ink: var(--mill-on-derwent);
+  --ink-muted: color-mix(in srgb, var(--mill-on-derwent) 82%, var(--mill-derwent));
+  --line: color-mix(in srgb, var(--mill-on-derwent) 24%, var(--mill-derwent));
+  --derwent: var(--mill-on-derwent);
+  --derwent-soft: var(--mill-derwent);
+  --on-derwent: var(--mill-derwent);
+  --copper: var(--night-copper);
+  --gritstone: var(--mill-gritstone);
+  color-scheme: dark;
+}
+
+/* Map tokens into Tailwind. The default palette is removed on purpose. */
+@theme {
+  --color-*: initial;
+  --shadow-*: initial;
+  --radius-*: initial;
+  --radius-control: 2px;
+  --radius-card: 4px;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-derwent: var(--derwent);
+  --color-derwent-soft: var(--derwent-soft);
+  --color-on-derwent: var(--on-derwent);
+  --color-copper: var(--copper);
+  --color-gritstone: var(--gritstone);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-display: var(--font-pagella), "Palatino Linotype", Palatino, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--surface);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Anchor targets clear the sticky header */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+
+  ::selection {
+    background-color: var(--derwent);
+    color: var(--on-derwent);
+  }
+
+  /* One focus style for every interactive element */
+  :focus-visible {
+    outline: 2px solid var(--copper);
+    outline-offset: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------- Type scale ---------- */
+@layer components {
+  .type-display-xl {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 48px;
+    letter-spacing: -0.01em;
+  }
+  .type-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.005em;
+  }
+  .type-heading-1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+  }
+  .type-heading-2 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .type-heading-3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 24px;
+  }
+  .type-body {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .type-intro {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .type-small {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ink-muted);
+  }
+  .type-eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .type-mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  @media (width >= 64rem) {
+    .type-display-xl {
+      font-size: 64px;
+      line-height: 68px;
+    }
+    .type-display {
+      font-size: 44px;
+      line-height: 50px;
+    }
+  }
+
+  /* 12-column grid, 24px gutters (4 columns, 16px gutters on phones) */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 16px;
+  }
+  @media (width >= 48rem) {
+    .grid-12 {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 24px;
+    }
+  }
+
+  /* Approach timeline: markers are derwent; the active (hovered) step turns copper.
+     With nothing hovered, the first step is the active one. */
+  .steps .step-marker {
+    background-color: var(--derwent);
+    transition: background-color 200ms ease-out;
+  }
+  .steps:not(:hover) .step:first-child .step-marker,
+  .steps .step:hover .step-marker {
+    background-color: var(--copper);
+  }
+
+  /* Inline text links */
+  .text-link {
+    color: var(--derwent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-thickness 150ms ease-out;
+  }
+  .text-link:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+/* Scroll reveal: elements fade up 8px, once. Only armed when JS runs and motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-armed [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .reveal-armed [data-reveal] {
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
+  }
+
+  /* Hero: shaft draws left to right, the wheel turns once by 90 degrees. Nothing loops. */
+  .hero-shaft {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: hero-shaft-draw 1.2s cubic-bezier(0.25, 0.6, 0.3, 1) 0.3s both;
+  }
+  .hero-wheel {
+    transform-box: view-box;
+    transform-origin: 140px 400px;
+    animation: hero-wheel-turn 2.4s cubic-bezier(0.3, 0.5, 0.2, 1) 0.1s both;
+  }
+}
+
+@keyframes hero-shaft-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-wheel-turn {
+  from {
+    transform: rotate(-90deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
